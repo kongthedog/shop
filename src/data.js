@@ -1,24 +1,26 @@
 let data = [
+  
     {
       id : 0,
-      title : "Book",
-      content : "Dinosaur Bingo Book",
+      title : "T-Rex",
+      content : "Tyrannosaurus Rex Toy",
+      price : 35
+    },
+
+    {
+      id : 1,
+      title : "Stegosaurus",
+      content : "Stegosaurus Toy",
       price : 60
     },
   
     {
-      id : 1,
-      title : "Figure",
-      content : "Figure of Ankylosaurus",
-      price : 120
-    },
-  
-    {
       id : 2,
-      title : "Poster",
-      content : "Poster of Brachiosaurus",
-      price : 35
-    }
+      title : "Brachiosaurus",
+      content : "Brachiosaurus Toy",
+      price : 120
+    }  
+
   ] 
 
   export default data;
