@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { Nav } from 'react-bootstrap';
 
 function Detail(props){
 
@@ -8,14 +8,20 @@ function Detail(props){
     let findItem = props.dino.find((x) => x.id == id);
     let [count, setCount] = useState(0);
     let [alert, setAlert] = useState(true);
+    let [tab, setTab] = useState(0);
+    let [fade2, setFade2] = useState('');
 
     useEffect(()=>{
-        const timer = setTimeout(() => { setAlert(false) }, 2000); 
+        const timer = setTimeout(() => { setAlert(false) }, 2000);
+        setTimeout(() => {
+            setFade2('end')
+        }, 100); 
         return () => clearTimeout(timer);
+        return ()=> { setFade2('')}
     }, [])
 
     return(
-        <div className="container">
+        <div className={'container start '+ fade2}>
             {
                 alert === true 
                 ? <div className='alert alert-warning'>
@@ -35,8 +41,42 @@ function Detail(props){
                     <button className="btn btn-danger">주문하기</button> 
                 </div>
             </div>
+
+            <Nav variant="tabs" defaultActiveKey="/link0">
+                <Nav.Item>
+                    <Nav.Link onClick={()=>{ setTab(0) }} eventKey="link0">button 0</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link onClick={()=>{ setTab(1) }} eventKey="link1">button 1</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link onClick={()=>{ setTab(2) }} eventKey="link2">button 2</Nav.Link>
+                </Nav.Item>
+            </Nav>
+            <TabContent tab={tab}/>
+            
         </div> 
     )
-  }
+}
 
-  export default Detail;
+function TabContent({tab}) {
+
+    let [fade, setFade] = useState('');
+    
+    useEffect(()=>{
+        setTimeout(() => {
+            setFade('end')
+        }, 100);
+        return ()=> {
+            setFade('')
+        }
+    }, [tab])
+
+    return (
+        <div className={'start '+ fade}>
+            {[<div>contents 0</div>, <div>contents 1</div>, <div>contents 2</div>][tab]}
+        </div>
+    )
+}
+
+export default Detail;

@@ -1,14 +1,15 @@
 import logo from './logo.svg';
 import { useState } from 'react';
-import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
+import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import './App.css';
 import data from './data';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import Detail from './pages/Detail'
+import axios from 'axios'
 
 function App() {
 
-  let [dino] = useState(data);
+  let [dino, setDino] = useState(data);
   let navigate = useNavigate();
 
   return (
@@ -16,7 +17,7 @@ function App() {
 
       <Navbar bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand href="#home">DinoShop</Navbar.Brand>
+          <Navbar.Brand>DinoShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>
@@ -39,6 +40,16 @@ function App() {
                 }
               </Row>
             </Container>
+          {/* <button onClick={()=>{
+            axios.get('url')
+            .then((add)=>{ 
+              let copy = [...dino, ...add.data];
+              setDino(copy);
+            })
+            .catch(()=>{
+              console.log('fail');
+            })
+          }}>버튼</button> */}
           </div>
         } />
         <Route path="/detail/:id" element={<Detail dino={dino}/>}/>
@@ -51,8 +62,9 @@ function App() {
 }
 
 function Card(props) {
+  let navigate = useNavigate();
   return (
-    <Col className='main-layout' >
+    <Col className='main-layout' onClick={()=>{ navigate('/detail/'+props.dino.id) }} >
       <img src={process.env.PUBLIC_URL + '/img/dinosaur_'+ props.dino.id +'.jpg'} 
         path={"/detail/"+props.dino.id}/>
       <h5>{ props.dino.title }</h5>
