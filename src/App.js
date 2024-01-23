@@ -6,6 +6,7 @@ import data from './data';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import Detail from './pages/Detail'
 import axios from 'axios'
+import Cart from './pages/Cart'
 
 function App() {
 
@@ -19,8 +20,8 @@ function App() {
         <Container>
           <Navbar.Brand>DinoShop</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
-            <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/detail') }}>Detail</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -40,7 +41,7 @@ function App() {
                 }
               </Row>
             </Container>
-          {/* <button onClick={()=>{
+            {/* <button onClick={()=>{
             axios.get('url')
             .then((add)=>{ 
               let copy = [...dino, ...add.data];
@@ -52,7 +53,11 @@ function App() {
           }}>버튼</button> */}
           </div>
         } />
-        <Route path="/detail/:id" element={<Detail dino={dino}/>}/>
+        <Route path="/detail/:id" element={
+          <Detail dino={dino} />
+        } />
+
+        <Route path='/cart' element={<Cart />} />
 
       </Routes>
 
@@ -64,17 +69,17 @@ function App() {
 function Card(props) {
   let navigate = useNavigate();
   return (
-    <Col className='main-layout' onClick={()=>{ navigate('/detail/'+props.dino.id) }} >
-      <img src={process.env.PUBLIC_URL + '/img/dinosaur_'+ props.dino.id +'.jpg'} 
-        path={"/detail/"+props.dino.id}/>
-      <h5>{ props.dino.title }</h5>
-      <p>{ props.dino.content }</p>
-      <p>{ props.dino.price }</p>
+    <Col className='main-layout' onClick={() => { navigate('/detail/' + props.dino.id) }} >
+      <img src={process.env.PUBLIC_URL + '/img/dinosaur_' + props.dino.id + '.jpg'}
+        path={"/detail/" + props.dino.id} />
+      <h5>{props.dino.title}</h5>
+      <p>{props.dino.content}</p>
+      <p>{props.dino.price}</p>
     </Col>
   )
 }
 
-function EventPage(){
+function EventPage() {
   return (
     <div>
       <h4>오늘의 이벤트</h4>
