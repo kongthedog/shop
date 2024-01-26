@@ -12,6 +12,18 @@ function Detail(props) {
   let [alert, setAlert] = useState(true);
   let [tab, setTab] = useState(0);
   let [fade2, setFade2] = useState('');
+  let dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    let getWatched = localStorage.getItem('watched')
+    getWatched = JSON.parse(getWatched)
+    getWatched.push(findItem.id)
+    getWatched = new Set(getWatched) // set 자료형이 중복제거해줌
+    getWatched = Array.from(getWatched)
+    localStorage.setItem('watched', JSON.stringify(getWatched))
+
+  },[])
 
   useEffect(() => {
     const timer = setTimeout(() => { setAlert(false) }, 2000);
@@ -22,8 +34,6 @@ function Detail(props) {
     return () => { setFade2('') }
   }, [])
 
-  let dispatch = useDispatch()
-  const navigate = useNavigate();
 
   return (
     <div className={'container start ' + fade2}>

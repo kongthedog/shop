@@ -1,17 +1,33 @@
 import logo from './logo.svg';
-import { useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import './App.css';
 import data from './data';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-import Detail from './pages/Detail'
+import { useQuery } from "react-query"
 import axios from 'axios'
-import Cart from './pages/Cart'
+
+//import Detail from './pages/Detail.js'
+//import Cart from './pages/Cart'
+
+const Detail = lazy(() => import('./pages/Detail.js'));
+const Cart = lazy(() => import('./pages/Cart'));
+
 
 function App() {
 
+  useEffect(()=>{
+    localStorage.setItem('watched',JSON.stringify([]))
+  },[])
+
   let [dino, setDino] = useState(data);
   let navigate = useNavigate();
+
+  let result = useQuery('getUser', ()=>
+    axios.get('https://codingapple1.github.io/userdata.json').then((a)=>
+      a.data
+    )
+  )
 
   return (
     <div className='App'>
@@ -21,7 +37,10 @@ function App() {
           <Navbar.Brand>DinoShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('/detail') }}>Detail</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart') }}>Cart</Nav.Link>
+          </Nav>
+          <Nav className='ms-auto'>
+            { result.isLoading ? 'loading...' : result.data.name}
           </Nav>
         </Container>
       </Navbar>
@@ -54,7 +73,9 @@ function App() {
           </div>
         } />
         <Route path="/detail/:id" element={
-          <Detail dino={dino} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Detail dino={dino} />
+          </Suspense>
         } />
 
         <Route path='/cart' element={<Cart />} />
